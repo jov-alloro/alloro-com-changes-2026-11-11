@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>alloro.com before and after</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Spectral:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1d1b18; --mute:#6b655c; --line:#e6e0d6; --bg:#fbf8f3; --card:#fff; --old:#9a3b26; --new:#2f6b3f; --oldbg:#fbeee9; --newbg:#ecf5ee; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 "Plus Jakarta Sans", system-ui, sans-serif; }
+  main { max-width:1400px; margin:0 auto; padding:28px 16px 80px; }
+  h1 { font-family:Spectral, Georgia, serif; font-size:30px; margin:0 0 4px; }
+  h2 { font-family:Spectral, Georgia, serif; font-size:21px; margin:0 0 12px; }
+  .lead { color:var(--mute); margin:0 0 20px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
+  .tabs button { font:inherit; font-weight:600; font-size:14px; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; }
+  .tabs button[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .tabs button:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin:16px 0; overflow:hidden; }
+  table { width:100%; border-collapse:collapse; font-size:14px; table-layout:fixed; }
+  th, td { text-align:left; vertical-align:top; padding:9px 8px; border-top:1px solid var(--line); word-break:break-word; }
+  thead th { border-top:0; font-size:13px; color:var(--mute); }
+  td.old { background:var(--oldbg); }
+  td.new { background:var(--newbg); }
+  tr.same td.old, tr.same td.new { background:transparent; color:var(--mute); }
+  .flag { font-size:12px; font-weight:700; border-radius:999px; padding:1px 8px; margin-left:6px; white-space:nowrap; }
+  .flag.ch { background:var(--ink); color:#fff; }
+  code { font:12.5px/1.5 ui-monospace, Consolas, monospace; }
+  .frames { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .frames figure { margin:0; }
+  .frames figcaption { font-weight:700; margin:0 0 6px; }
+  .frames figcaption span { font-weight:400; color:var(--mute); }
+  .frames iframe { width:100%; height:760px; border:1px solid var(--line); border-radius:10px; background:#fff; }
+  .muted { color:var(--mute); }
+  @media (max-width:900px) { .frames { grid-template-columns:1fr; } .frames iframe { height:620px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>alloro.com: before and after</h1>
+  <p class="lead">Left is the page as it was live on Nov 11 before the change (saved copy). Right is the page as it was live on Nov 12, after the change (saved copy). Both tables below are read from the two pages themselves. Visit counting, forms and free-check links are switched off in these copies.</p>
+
+  <div class="tabs" role="group" aria-label="Page" id="tabs"></div>
+
+  <section class="card">
+    <h2>Words and search details</h2>
+    <table id="words"><thead><tr><th style="width:18%">Field</th><th>Before</th><th>After</th></tr></thead><tbody></tbody></table>
+  </section>
+
+  <section class="card">
+    <h2>Free-check buttons</h2>
+    <p class="muted" style="margin:0 0 10px">Where each button links to. The tag at the end is what tells the free-check admin list where the visitor came from.</p>
+    <table id="links"><thead><tr><th style="width:18%">Button</th><th>Before</th><th>After</th></tr></thead><tbody></tbody></table>
+  </section>
+
+  <section class="card">
+    <h2>The pages side by side</h2>
+    <div class="frames">
+      <figure><figcaption>Before <span>— live until Nov 11, 15:40 UTC</span></figcaption><iframe id="fb" title="Before"></iframe></figure>
+      <figure><figcaption>After <span>— live from Nov 11, 15:40 UTC</span></figcaption><iframe id="fa" title="After"></iframe></figure>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var PAGES = ["pricing", "partners", "home", "about", "contact", "benefits"];
+  var tabs = document.getElementById("tabs");
+  var fb = document.getElementById("fb"), fa = document.getElementById("fa");
+  var esc = function (s) { return String(s == null ? "(none)" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); };
+
+  function words(d) {
+    var meta = function (sel) { var m = d.querySelector(sel); return m ? m.getAttribute("content") : null; };
+    var ld = [].map.call(d.querySelectorAll('script[type="application/ld+json"]'), function (s) { return s.textContent; }).join("");
+    var unit = (ld.match(/"unitText"\s*:\s*"([^"]*)"/) || [])[1];
+    var h1 = d.querySelector("h1");
+    var body = d.body ? d.body.innerText : "";
+    var partners = (body.match(/One plan\. \$499 a month[^\n.]*\./) || [])[0];
+    return [
+      ["Heading (H1)", h1 ? h1.textContent.replace(/\s+/g, " ").trim() : null],
+      ["Page title", d.title],
+      ["Description", meta('meta[name="description"]')],
+      ["OG title (link preview)", meta('meta[property="og:title"]')],
+      ["OG description", meta('meta[property="og:description"]')],
+      ["Price data unitText", unit || "(no price data on this page)"],
+      ["Price line in the page", partners || "(none)"],
+      ['"per location" on the page', String((d.documentElement.outerHTML.match(/per location/gi) || []).length) + " times"]
+    ];
+  }
+
+  function links(d) {
+    return [].map.call(d.querySelectorAll('a[href^="https://audit.getalloro.com"]'), function (a) {
+      var c = a.className || "";
+      var where = /header-component-mobile-cta/.test(c) ? "Header (phone)" : /header-component/.test(c) ? "Header" : a.closest("footer") ? "Footer" : "Page";
+      var label = (a.textContent || "").trim().replace(/\s+/g, " ") || "(card link)";
+      var u = new URL(a.href);
+      return { name: where + " · " + label, tag: u.search ? u.search.slice(1).replace(/&/g, " & ") : "no tag" };
+    });
+  }
+
+  function row(name, b, a) {
+    var same = b === a;
+    return "<tr class=\"" + (same ? "same" : "") + "\"><th>" + esc(name) + (same ? "" : "<span class=\"flag ch\">changed</span>") + "</th><td class=\"old\">" + esc(b) + "</td><td class=\"new\">" + esc(a) + "</td></tr>";
+  }
+
+  function compare() {
+    var db = fb.contentDocument, da = fa.contentDocument;
+    var wb = words(db), wa = words(da);
+    document.querySelector("#words tbody").innerHTML = wb.map(function (r, i) { return row(r[0], r[1], wa[i][1]); }).join("");
+    var lb = links(db), la = links(da), n = Math.max(lb.length, la.length), out = "";
+    for (var i = 0; i < n; i++) out += row((la[i] || lb[i]).name, lb[i] ? lb[i].tag : "—", la[i] ? la[i].tag : "—");
+    document.querySelector("#links tbody").innerHTML = out || "<tr><td colspan=3>No free-check buttons</td></tr>";
+  }
+
+  function show(name) {
+    [].forEach.call(tabs.children, function (b) { b.setAttribute("aria-pressed", String(b.dataset.p === name)); });
+    document.querySelector("#words tbody").innerHTML = "<tr><td colspan=3 class=muted>Loading…</td></tr>";
+    document.querySelector("#links tbody").innerHTML = "";
+    var loaded = 0;
+    var done = function () { if (++loaded === 2) setTimeout(compare, 700); };
+    fb.onload = done; fa.onload = done;
+    fb.src = "before/" + name + ".html"; fa.src = "after/" + name + ".html";
+    try { history.replaceState(null, "", "#" + name); } catch (e) {}
+  }
+
+  PAGES.forEach(function (p) {
+    var b = document.createElement("button");
+    b.type = "button"; b.dataset.p = p; b.textContent = p.charAt(0).toUpperCase() + p.slice(1);
+    b.addEventListener("click", function () { show(p); });
+    tabs.appendChild(b);
+  });
+  show(PAGES.indexOf(location.hash.slice(1)) > -1 ? location.hash.slice(1) : "pricing");
+})();
+</script>
+</body>
+</html>
